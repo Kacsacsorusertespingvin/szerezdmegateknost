@@ -11,7 +11,7 @@ body {
     text-align: center;
     padding: 20px;
 }
-#game, #jumpscare {
+#game {
     display: none;
 }
 button {
@@ -23,29 +23,11 @@ button {
     font-size: 24px;
     margin-top: 10px;
 }
-#jumpscare {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#jumpscare img {
-    max-width: 100%;
-    max-height: 100%;
-    animation: flash 0.1s alternate infinite;
-}
-@keyframes flash {
-    from { opacity: 1; }
-    to { opacity: 0.3; }
-}
 </style>
 </head>
 <body>
 
-<h1>Arany Mancs Küldetés</h1>
+<h1>Low Budget Teknős Küldetés</h1>
 
 <div id="start-screen">
     <button id="start-btn">Start</button>
@@ -54,24 +36,17 @@ button {
 <div id="game">
     <div id="timer">20:00</div>
     <p>
-        10. Sikeresen bejutottatok a kamrába, ahol a mancsok, többek között az Arany Mancs is található. 
-        Meglepődve veszitek észre, hogy az aranymancsot egy 77 fejű sárkány őrzi. A 77 fejű sárkány etetése 
+        10. Sikeresen bejutottatok a kamrába, ahol a teknősök, többek között a Low Budget Teknős is található. 
+        Meglepődve veszitek észre, hogy a Low Budget Teknőst egy 77 fejű sárkány őrzi. A 77 fejű sárkány etetése 
         nem egyszerű: csak sárkánygyümölcsöt eszik, 77 fejéhez 77 különböző gyomor tartozik, és csak akkor alszik 
         jól éjszaka, ha minden gyomrába különböző számú, de legalább 24 és legfeljebb 100 sárkánygyümölcs került 
         a nap folyamán. Ha egy étkezés során van négy olyan feje, amelyik különböző számú sárkánygyümölcsöt fogyaszt, 
         akkor viszont megfájdul a hasa evés után. Legalább hány etetésre van szükség egy nap, hogy a sárkány hasa 
-        ne fájjon, és éjszaka is jól aludjon, és így meg tudjátok szerezni az Arany Mancsot?
+        ne fájjon, és éjszaka is jól aludjon, és így meg tudjátok szerezni a Low Budget Teknőst?
     </p>
     <input type="number" id="answer" placeholder="Írd be a választ">
     <button id="submit-answer">Válasz elküldése</button>
 </div>
-
-<div id="jumpscare">
-    <img src="media/jumpscare.png" alt="Jumpscare">
-</div>
-
-<audio id="toreador" src="media/toreador.mp3"></audio>
-<audio id="scream" src="media/scream.mp3"></audio>
 
 <script>
 const startBtn = document.getElementById("start-btn");
@@ -80,9 +55,6 @@ const game = document.getElementById("game");
 const timerDisplay = document.getElementById("timer");
 const submitBtn = document.getElementById("submit-answer");
 const answerInput = document.getElementById("answer");
-const jumpscare = document.getElementById("jumpscare");
-const toreador = document.getElementById("toreador");
-const scream = document.getElementById("scream");
 
 let timeLeft = 20 * 60; // 20 perc
 let timer;
@@ -100,13 +72,10 @@ function startTimer() {
         let seconds = timeLeft % 60;
         timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
-        if (timeLeft === 60) {
-            toreador.play();
-        }
-
         if (timeLeft <= 0) {
             clearInterval(timer);
-            triggerJumpscare();
+            alert("Lejárt az idő! Vesztettél!");
+            game.style.display = "none";
         }
     }, 1000);
 }
@@ -114,17 +83,14 @@ function startTimer() {
 submitBtn.addEventListener("click", () => {
     if (answerInput.value.trim() === "26") {
         clearInterval(timer);
-        alert("Gratulálok! Megszerezted az Arany Mancsot!");
+        alert("Gratulálok! Megszerezted a Low Budget Teknőst! (Legalábbis ha első voltál ;)");
+        game.style.display = "none";
     } else {
-        triggerJumpscare();
+        clearInterval(timer);
+        alert("Rossz válasz! Vesztettél!");
+        game.style.display = "none";
     }
 });
-
-function triggerJumpscare() {
-    game.style.display = "none";
-    jumpscare.style.display = "flex";
-    scream.play();
-}
 </script>
 
 </body>
